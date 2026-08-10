@@ -4,7 +4,7 @@ A scroll-driven WebGL portfolio built as a vintage CRT monitor. The 3D scene liv
 
 **Live:** _add URL_ · **Author:** [Rizaldy Iman Putra](https://www.linkedin.com/in/rizaldy-imanputra-a17b0317a/)
 
-> _Add a screenshot or a short screen capture here. For a repo like this it does more than any paragraph of description._
+<img width="1464" height="869" alt="Screenshot 2026-08-10 at 1 17 00 PM" src="https://github.com/user-attachments/assets/f6cae8d8-ac9b-4333-b243-537b63b1e7fe" />
 
 ---
 
