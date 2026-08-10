@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rizaldy Iman Putra — Full Stack Developer</title>
+  <meta name="description" content="Portfolio of Rizaldy Iman Putra, full stack developer working in TypeScript, Next.js and Java Spring Boot." />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Rizaldy Iman Putra — Full Stack Developer" />
+  <meta property="og:description" content="Aerospace engineering to full stack. TypeScript and Next.js up front, Spring Boot behind it." />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=VT323&display=swap" rel="stylesheet" />
+
+  <!--
+    Loader is inline, not in the bundle. React is ~60KB gzipped and three.js
+    ~117KB; if the loader shipped inside them, the user stares at a blank
+    document until both parse. Inline means it paints on the first byte.
+  -->
+  <style>
+    /* Deliberately NOT overflow:hidden. That zeroes scrollHeight, which makes
+       Lenis compute progress against a limit of 0 and report the end of the
+       page — the site flashes its last panel during the reveal. Input is
+       locked by lenis.stop() and the listeners below instead. */
+    html.booting { overscroll-behavior: none; }
+
+    #boot-loader{
+      position:fixed;inset:0;z-index:9999;
+      background:#050403;
+      display:flex;align-items:center;justify-content:center;
+      touch-action:none;overscroll-behavior:contain;
+      font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+      color:#F5B942;
+      transition:opacity .55s ease, filter .55s ease;
+    }
+    /* The tube itself: a bright line that opens into a full raster. */
+    #boot-raster{
+      position:relative;
+      width:min(560px,86vw);
+      background:#0B0906;
+      border-radius:10px/16px;
+      box-shadow:inset 0 0 60px 12px rgba(0,0,0,.9), 0 0 90px -20px rgba(245,185,66,.25);
+      padding:clamp(20px,4.5vw,34px);
+      overflow:hidden;
+      transform-origin:center;
+      animation:boot-open .62s cubic-bezier(.16,.9,.3,1) forwards;
+    }
+    @keyframes boot-open{
+      0%   { transform:scaleY(.004) scaleX(.55); filter:brightness(3.4); opacity:0 }
+      18%  { transform:scaleY(.004) scaleX(1);   filter:brightness(3.4); opacity:1 }
+      100% { transform:scaleY(1)    scaleX(1);   filter:brightness(1);   opacity:1 }
+    }
+    /* Scanlines + vignette, so the loader is unmistakably the same device. */
+    #boot-raster::after{
+      content:"";position:absolute;inset:0;pointer-events:none;
+      background:
+        radial-gradient(120% 120% at 50% 50%, rgba(0,0,0,0) 40%, rgba(0,0,0,.55) 100%),
+        repeating-linear-gradient(180deg, rgba(0,0,0,0) 0 2px, rgba(0,0,0,.34) 2px 3px);
+    }
+    #boot-lines{
+      margin:0;white-space:pre;line-height:1.85;
+      font-size:clamp(11px,2.6vw,14px);letter-spacing:.02em;
+      color:#8C5A1E;min-height:11.1em;
+    }
+    #boot-lines b{color:#F5B942;font-weight:400}
+    #boot-lines i{color:#FFD98A;font-style:normal}
+    #boot-lines span.err{color:#4FD1E0}
+
+    #boot-exec{
+      margin-top:14px;font-family:"VT323","IBM Plex Mono",monospace;
+      font-size:clamp(17px,4vw,24px);color:#FFD98A;
+      text-shadow:0 0 18px rgba(245,185,66,.5);
+      opacity:0;transition:opacity .25s;
+    }
+    #boot-exec.on{opacity:1}
+    #boot-exec::after{content:"█";margin-left:6px;animation:boot-blink 1.05s steps(1) infinite}
+    @keyframes boot-blink{50%{opacity:0}}
+
+    #boot-track{
+      margin-top:16px;height:6px;border-radius:2px;background:#150F0B;
+      box-shadow:inset 0 1px 2px #000;overflow:hidden;
+    }
+    #boot-bar{
+      height:100%;width:0%;
+      background:linear-gradient(90deg,#7A4E14,#F5B942);
+      box-shadow:0 0 8px rgba(245,185,66,.6);
+      transition:width .18s linear;
+    }
+    #boot-skip{
+      margin-top:12px;font-size:9.5px;letter-spacing:.28em;text-transform:uppercase;
+      color:#5E4526;text-align:right;opacity:0;transition:opacity .4s;
+    }
+    #boot-skip.on{opacity:1}
+
+    /* Hand-off: one bright flash, then dissolve. Reads as the picture settling. */
+    #boot-loader.boot-out{ opacity:0; filter:brightness(2.6); pointer-events:none; }
+
+    @media (prefers-reduced-motion:reduce){
+      #boot-raster{animation:none}
+      #boot-exec::after{animation:none}
+      #boot-loader{transition:opacity .2s}
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <div id="boot-loader" role="status" aria-live="polite" aria-label="Loading">
+    <div id="boot-raster">
+      <pre id="boot-lines"></pre>
+      <div id="boot-exec">$ ./portfolio</div>
+      <div id="boot-track"><div id="boot-bar"></div></div>
+      <div id="boot-skip">tap to skip</div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    var html = document.documentElement;
+    html.classList.add("booting");
+
+    // A refresh from halfway down the page must not land mid-scroll behind
+    // the loader, or the reveal jumps to a random section.
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    window.scrollTo(0, 0);
+
+    var el   = document.getElementById("boot-loader");
+    var out  = document.getElementById("boot-lines");
+    var exec = document.getElementById("boot-exec");
+    var bar  = document.getElementById("boot-bar");
+    var skip = document.getElementById("boot-skip");
+
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Floor stops it flashing on a warm cache; ceiling stops a bad
+    // connection from trapping someone behind an animation.
+    var MIN_MS = reduce ? 350 : 1400;
+    var MAX_MS = 6000;
+    var LINE_MS = reduce ? 0 : 120;
+
+    var t0 = performance.now();
+    var appReady = false;
+    var finished = false;
+
+    var LINES = [
+      "SYNTHEX BIOS v2.14",
+      "P3 AMBER PHOSPHOR · 640K",
+      "",
+      "MEM TEST ..................... <b>65536 OK</b>",
+      "DEFLECTION YOKE .............. <b>OK</b>",
+      "WEBGL CONTEXT ................ <b>OK</b>",
+      "TYPEFACES .................... <b>OK</b>",
+      "MOUNT /usr/portfolio ......... <b>OK</b>",
+      "",
+      "<i>RIZALDY IMAN PUTRA · FULL STACK DEVELOPER</i>"
+    ];
+
+    var i = 0;
+    (function type() {
+      if (i >= LINES.length) {
+        exec.className = "on";
+        return;
+      }
+      out.innerHTML += (i ? "\n" : "") + LINES[i];
+      i++;
+      if (LINE_MS === 0) { out.innerHTML = LINES.join("\n"); exec.className = "on"; return; }
+      setTimeout(type, LINE_MS);
+    })();
+
+    // React calls this once the WebGL scene has actually drawn a frame.
+    window.__crtReady = function () { appReady = true; };
+
+    function finish() {
+      if (finished) return;
+      finished = true;
+      window.removeEventListener("wheel", block);
+      window.removeEventListener("touchmove", block);
+      window.scrollTo(0, 0);
+      el.className = "boot-out";
+      setTimeout(function () {
+        html.classList.remove("booting");
+        if (el.parentNode) el.parentNode.removeChild(el);
+        try { delete window.__crtReady; } catch (e) { window.__crtReady = null; }
+        // Scroll was locked while the loader was up, so Lenis cached a limit
+        // of zero. Tell it to remeasure or the page loads unscrollable.
+        window.dispatchEvent(new CustomEvent("crt:booted"));
+      }, 600);
+    }
+
+    function tick() {
+      var t = performance.now() - t0;
+      // Bar tracks elapsed against the floor, then completes on readiness.
+      var pct = appReady ? 100 : Math.min(94, (t / MIN_MS) * 94);
+      bar.style.width = pct.toFixed(1) + "%";
+      if (t > 700) skip.className = "on";
+      if ((appReady && t >= MIN_MS) || t >= MAX_MS) { bar.style.width = "100%"; setTimeout(finish, 160); return; }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    // Hold scroll without touching layout height.
+    function block(e) { e.preventDefault(); }
+    window.addEventListener("wheel", block, { passive: false });
+    window.addEventListener("touchmove", block, { passive: false });
+
+    // Never hold someone hostage to an animation.
+    function allowSkip() {
+      if (performance.now() - t0 < 500) return;
+      finish();
+    }
+    el.addEventListener("click", allowSkip);
+    window.addEventListener("keydown", allowSkip);
+
+    // Belt and braces: if the bundle fails outright, still reveal the DOM copy.
+    window.addEventListener("load", function () {
+      setTimeout(function () { if (!appReady) finish(); }, 2500);
+    });
+  })();
+  </script>
+
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
