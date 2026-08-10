@@ -174,9 +174,3 @@ Listed because they're real, not resolved.
 - **Project card textures are procedural**, drawn on canvas. Real screenshots would be more convincing; they should load lazily by camera proximity.
 - **Fonts load from Google Fonts** — a render-blocking third-party request. Self-hosting would remove it.
 - **`@types/three` must be pinned to match `three`.** They ship separately and drift; a floating range resolves to a much newer version and produces phantom errors.
-
----
-
-## Licence
-
-MIT for the code. Content, copy and personal details are not — please don't republish those as your own.
