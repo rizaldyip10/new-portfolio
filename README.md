@@ -2,7 +2,7 @@
 
 A scroll-driven WebGL portfolio built as a vintage CRT monitor. The 3D scene lives inside the tube; the navigation lives on the chassis.
 
-**Live:** _add URL_ · **Author:** [Rizaldy Iman Putra](https://www.linkedin.com/in/rizaldy-imanputra-a17b0317a/)
+**Live:** [Portfolio URL](https://rizaldyimanputra.vercel.app/) · **Author:** [Rizaldy Iman Putra](https://www.linkedin.com/in/rizaldy-imanputra-a17b0317a/)
 
 <img width="1464" height="869" alt="Screenshot 2026-08-10 at 1 17 00 PM" src="https://github.com/user-attachments/assets/f6cae8d8-ac9b-4333-b243-537b63b1e7fe" />
 
