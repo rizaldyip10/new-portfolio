@@ -16,7 +16,7 @@ export const CONFIG = {
   linkedin: "linkedin.com/in/rizaldy-imanputra-a17b0317a",
   linkedinUrl: "https://www.linkedin.com/in/rizaldy-imanputra-a17b0317a/",
   /** Put the PDF in /public and point this at /Rizaldy_Iman_Putra.pdf */
-  resumeUrl: "#",
+  resumeUrl: "https://drive.google.com/file/d/1hB5qtaze7n1rPRIvBB1aIz4AkKA15RNY/view?usp=sharing",
 
   projects: [
     { title: "LYDHH LAW", tag: "CORPORATE WEB", seed: 0 },
